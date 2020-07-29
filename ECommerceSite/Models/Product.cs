@@ -22,6 +22,7 @@ namespace ECommerceSite.Models
         /// <summary>
         /// The retsil price in US currency
         /// </summary>
+        [DataType(DataType.Currency)]
         public double Price { get; set; }
         
         /// <summary>
