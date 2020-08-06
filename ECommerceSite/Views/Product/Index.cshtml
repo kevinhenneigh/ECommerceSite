@@ -12,21 +12,21 @@
                 <th>Title</th>
                 <th>Price</th>
                 <th>Category</th>
+                <th></th>
             </tr>
         </thead>
         <tbody>
-            @foreach (Product p in Model)
+           @foreach(Product product in Model)
             {   
-            <tr>
-                <td>@Html.DisplayNameFor(m => m.Title)</td>
-                <td>@Html.DisplayNameFor(m => p.Price)</td>
-                <td>@Html.DisplayNameFor(m => m.Category)</td>
-                <td>
-                    <a class="btn btn-secondary" href="">Edit</a>
-                    <a class="btn btn-danger" href="">Delete</a>
-                </td>
-            </tr>
-                
+                <tr>
+                    <td>@product.Title</td>
+                    <td>@Html.DisplayFor(m => product.Price)</td>
+                    <td>@product.Category</td>
+                    <td>
+                        <a class="btn btn-secondary" href="">Edit</a>
+                        <a class="btn btn-danger" href="">Delete</a>
+                    </td>
+                </tr>   
             }
         </tbody>
     </table>
