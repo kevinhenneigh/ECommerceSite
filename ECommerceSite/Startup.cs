@@ -29,7 +29,7 @@ namespace ECommerceSite
             services.AddControllersWithViews();
 
             services.AddDbContext<ProductContext>(options =>
-            options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+                options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
