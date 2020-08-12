@@ -38,7 +38,7 @@
                     <td>@Html.DisplayFor(m => product.Price)</td>
                     <td>@product.Category</td>
                     <td>
-                        <a class="btn btn-secondary" href="">Edit</a>
+                        <a class="btn btn-secondary" asp-route-id="@product.ProductId" asp-action="Edit">Edit</a>
                         <a class="btn btn-danger" href="">Delete</a>
                     </td>
                 </tr>   
