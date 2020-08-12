@@ -37,20 +37,47 @@ namespace ECommerceSite.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Add(Product p)
+        public async Task<IActionResult> Add(Product product)
         {
             if (ModelState.IsValid)
             {
                 // Add to Db
-                _context.Products.Add(p);
+                _context.Products.Add(product);
                 await _context.SaveChangesAsync();
 
-                TempData["Message"] = $"{p.Title} was added sucessfully";
+                TempData["Message"] = $"{product.Title} was added sucessfully";
 
                 // redirect back to catalouge page
                 return RedirectToAction("Index");
             }
             return View();
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> Edit(int id)
+        {
+            // Get product with corresponding id
+            Product product = await _context.Products
+                                      .Where(prod => prod.ProductId == id)
+                                      .SingleAsync();
+                
+
+
+            // Pass product to view
+            return View(product);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Edit(Product product)
+        {
+            if (ModelState.IsValid)
+            {
+                _context.Entry(product).State = EntityState.Modified;
+                await _context.SaveChangesAsync();
+
+                ViewData["Message"] = "Product updated succesfully!";
+            }
+            return View(product);
         }
     }
 }
