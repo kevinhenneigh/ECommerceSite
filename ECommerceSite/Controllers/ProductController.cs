@@ -79,7 +79,7 @@ namespace ECommerceSite.Controllers
             }
             return View(product);
         }
-
+        [HttpGet]
         public async Task<IActionResult> Delete(int id)
         {
             // Get product with corresponding id
@@ -87,6 +87,22 @@ namespace ECommerceSite.Controllers
                                       .Where(prod => prod.ProductId == id)
                                       .SingleAsync();
             return View(product);
+        }
+        [HttpPost]
+        [ActionName("Delete")]
+        public async Task<IActionResult> DeleteConfirmed(int id)
+        {
+            // Get product with corresponding id
+            Product product = await _context.Products
+                                      .Where(prod => prod.ProductId == id)
+                                      .SingleAsync();
+
+            _context.Entry(product).State = EntityState.Deleted;
+            await _context.SaveChangesAsync();
+
+            TempData["Message"] = $"{product.Title} was deleted";
+            
+            return RedirectToAction("Index");
         }
     }
 }
