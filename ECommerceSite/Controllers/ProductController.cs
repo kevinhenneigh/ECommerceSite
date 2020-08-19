@@ -27,22 +27,11 @@ namespace ECommerceSite.Controllers
             const int PageSize = 3;
             ViewData["CurrentPage"] = pageNum;
 
-            int numProducts = await (from product in _context.Products
-                               select product).CountAsync();
-
+            int numProducts = await ProductDb.GetTotalProductsAsync(_context);
             int totalPages = (int)Math.Ceiling((double)numProducts / PageSize);
-
             ViewData["MaxPage"] = totalPages;
 
-
-            // Get all products from database
-            //  List<Product> products = await _context.Products.ToListAsync();
-            List<Product> products = await (from product in _context.Products
-                                            orderby product.Title ascending
-                                            select product)
-                                           .Skip(PageSize * (pageNum - 1)) //Skip must be first
-                                           .Take(pageNum)
-                                           .ToListAsync();
+            List<Product> products = await ProductDb.GetProductsAsync(_context, PageSize, pageNum);
 
             // Send list of products to view to be displayed
             return View(products);
@@ -59,9 +48,7 @@ namespace ECommerceSite.Controllers
         {
             if (ModelState.IsValid)
             {
-                // Add to Db
-                _context.Products.Add(product);
-                await _context.SaveChangesAsync();
+                await ProductDb.AddProductAsync(_context, product);
 
                 TempData["Message"] = $"{product.Title} was added sucessfully";
 
