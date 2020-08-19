@@ -19,12 +19,22 @@ namespace ECommerceSite.Controllers
         }
 
         /// <summary>
-        /// Displays a view that lists all products
+        /// Displays a view that lists a page of products
         /// </summary>
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(int? id)
         {
+            int pageNum = id ?? 1;
+            const int PageSize = 3;
+
+
             // Get all products from database
-              List<Product> products = await _context.Products.ToListAsync();
+            //  List<Product> products = await _context.Products.ToListAsync();
+            List<Product> products = await (from product in _context.Products
+                                            orderby product.Title ascending
+                                            select product)
+                                           .Skip(PageSize * (pageNum - 1)) //Skip must be first
+                                           .Take(pageNum)
+                                           .ToListAsync();
 
             // Send list of products to view to be displayed
             return View(products);
