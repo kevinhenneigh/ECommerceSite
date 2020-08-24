@@ -19,12 +19,22 @@ namespace ECommerceSite.Controllers
         }
 
         /// <summary>
-        /// Displays a view that lists all products
+        /// Displays a view that lists a page of products
         /// </summary>
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(int? id)
         {
-            // Get all products from database
-              List<Product> products = await _context.Products.ToListAsync();
+            int pageNum = id ?? 1;
+            const int PageSize = 3;
+            ViewData["CurrentPage"] = pageNum;
+
+            int numProducts = await (from product in _context.Products
+                                     select product).CountAsync();
+            
+            int totalPages = (int)Math.Ceiling((double)numProducts / PageSize);
+            
+            ViewData["MaxPage"] = totalPages;
+
+            List<Product> products = await ProductDb.GetProductsAsync(_context, PageSize, pageNum);
 
             // Send list of products to view to be displayed
             return View(products);
@@ -41,13 +51,11 @@ namespace ECommerceSite.Controllers
         {
             if (ModelState.IsValid)
             {
-                // Add to Db
-                _context.Products.Add(product);
-                await _context.SaveChangesAsync();
+                await ProductDb.AddProductAsync(_context, product);
 
                 TempData["Message"] = $"{product.Title} was added sucessfully";
 
-                // redirect back to catalouge page
+                // redirect back to catalog page
                 return RedirectToAction("Index");
             }
             return View();
