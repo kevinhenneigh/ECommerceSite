@@ -47,6 +47,9 @@ namespace ECommerceSite.Models
         [Display(Name = "Confirm Password")]
         public string ConfirmPassword { get; set; }
 
+        [StringLength(20)]
+        public string Username { get; set; }
+
 
         [DataType(DataType.Date)]
         public DateTime? DateOfBirth { get; set; }
