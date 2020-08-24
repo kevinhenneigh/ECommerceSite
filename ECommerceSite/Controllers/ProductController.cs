@@ -27,8 +27,11 @@ namespace ECommerceSite.Controllers
             const int PageSize = 3;
             ViewData["CurrentPage"] = pageNum;
 
-            int numProducts = await ProductDb.GetTotalProductsAsync(_context);
+            int numProducts = await (from product in _context.Products
+                                     select product).CountAsync();
+            
             int totalPages = (int)Math.Ceiling((double)numProducts / PageSize);
+            
             ViewData["MaxPage"] = totalPages;
 
             List<Product> products = await ProductDb.GetProductsAsync(_context, PageSize, pageNum);
@@ -52,7 +55,7 @@ namespace ECommerceSite.Controllers
 
                 TempData["Message"] = $"{product.Title} was added sucessfully";
 
-                // redirect back to catalouge page
+                // redirect back to catalog page
                 return RedirectToAction("Index");
             }
             return View();
