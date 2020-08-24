@@ -34,7 +34,7 @@ namespace ECommerceSite.Data
                         orderby product.Title ascending
                         select product)
                         .Skip(PageSize * (pageNum - 1)) //Skip must be before Take
-                        .Take(pageNum)
+                        .Take(PageSize)
                         .ToListAsync();
         }
 
