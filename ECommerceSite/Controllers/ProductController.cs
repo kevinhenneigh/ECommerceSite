@@ -88,6 +88,7 @@ namespace ECommerceSite.Controllers
             return View(product);
         }
         [HttpGet]
+        
         public async Task<IActionResult> Delete(int id)
         {
             // Get product with corresponding id
@@ -96,6 +97,7 @@ namespace ECommerceSite.Controllers
                                       .SingleAsync();
             return View(product);
         }
+
         [HttpPost]
         [ActionName("Delete")]
         public async Task<IActionResult> DeleteConfirmed(int id)

@@ -33,7 +33,7 @@ namespace ECommerceSite.Controllers
                     DateOfBirth = register.DateOfBirth,
                     Email = register.Email,
                     Password = register.Password,
-                    UserName = register.Username
+                    Username = register.Username
                 };
 
                 // Add to database
@@ -44,6 +44,10 @@ namespace ECommerceSite.Controllers
                 return RedirectToAction("Index", "Home");
             }
             return View(register);
+        }
+        public IActionResult Login()
+        {
+            return View();
         }
     }
 }
