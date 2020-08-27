@@ -64,15 +64,9 @@ namespace ECommerceSite.Controllers
         [HttpGet]
         public async Task<IActionResult> Edit(int id)
         {
-            // Get product with corresponding id
-            Product product = await _context.Products
-                                      .Where(prod => prod.ProductId == id)
-                                      .SingleAsync();
-                
+            Product p = await ProductDb.GetProductAsync(_context, id);
 
-
-            // Pass product to view
-            return View(product);
+            return View(p);
         }
 
         [HttpPost]
@@ -87,15 +81,13 @@ namespace ECommerceSite.Controllers
             }
             return View(product);
         }
+
         [HttpGet]
-        
         public async Task<IActionResult> Delete(int id)
         {
             // Get product with corresponding id
-            Product product = await _context.Products
-                                      .Where(prod => prod.ProductId == id)
-                                      .SingleAsync();
-            return View(product);
+            Product p = await ProductDb.GetProductAsync(_context, id);
+            return View(p);
         }
 
         [HttpPost]
@@ -103,14 +95,12 @@ namespace ECommerceSite.Controllers
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             // Get product with corresponding id
-            Product product = await _context.Products
-                                      .Where(prod => prod.ProductId == id)
-                                      .SingleAsync();
+            Product p = await ProductDb.GetProductAsync(_context, id);
 
-            _context.Entry(product).State = EntityState.Deleted;
+            _context.Entry(p).State = EntityState.Deleted;
             await _context.SaveChangesAsync();
 
-            TempData["Message"] = $"{product.Title} was deleted";
+            TempData["Message"] = $"{p.Title} was deleted";
             
             return RedirectToAction("Index");
         }
