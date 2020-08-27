@@ -29,6 +29,32 @@ namespace ECommerceSite.Controllers
         {
             if (ModelState.IsValid)
             {
+                // Check if username/email is taken
+                bool isEmailTaken = await (from acc in _context.UserAccounts
+                                     where acc.Email == register.Email
+                                     select acc).AnyAsync();
+                // if yes, add a custom error and send back to view
+                if (isEmailTaken)
+                {
+                    ModelState.AddModelError(nameof(RegisterViewModel.Email), "That Email is already in use");       
+                }
+
+                bool isUsernameTaken = await (from acc in _context.UserAccounts
+                                           where acc.Username == register.Username
+                                           select acc).AnyAsync();
+                // if yes, add a custom error and send back to view
+                if (isUsernameTaken)
+                {
+                    ModelState.AddModelError(nameof(RegisterViewModel.Username), "That Username is already in use");  
+                }
+                if (isEmailTaken || isUsernameTaken)
+                {
+                    return View(register);
+                }
+                {
+
+                }
+
                 // Map data to user account instance
                 UserAccount account = new UserAccount()
                 {
